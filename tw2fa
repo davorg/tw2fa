@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use feature 'say';
+
+use Text::ParseWords;
+use Time::Piece;
+
+my @cols;
+
+while (<>) {
+  chomp;
+  my %txn;
+  if ($. == 1) {
+    @cols = parse_line(',', 0, $_);
+  } else {
+    @txn{@cols} = parse_line(',', 0, $_);
+    $txn{Date} =~ s|-|/|g;
+    $txn{Amount} += $txn{'Total fees'};
+    say join ',', map { "$_" } @txn{'Date', 'Amount', 'Description'};
+  }
+}
