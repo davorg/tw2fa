@@ -18,6 +18,14 @@ while (<>) {
     @txn{@cols} = parse_line(',', 0, $_);
     $txn{Date} =~ s|-|/|g;
     $txn{Amount} += $txn{'Total fees'};
-    say join ',', map { "$_" } @txn{'Date', 'Amount', 'Description'};
+    say join ',', map { maybe_quote($_) } @txn{'Date', 'Amount', 'Description'};
   }
+}
+
+sub maybe_quote {
+  my ($str) = @_;
+
+  $str = qq["$str"] if $str =~ /,/;
+
+  return $str;
 }
