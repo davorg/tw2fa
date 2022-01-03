@@ -17,7 +17,7 @@ while (<>) {
   } else {
     @txn{@cols} = parse_line(',', 0, $_);
     $txn{Date} =~ s|-|/|g;
-    $txn{Amount} += $txn{'Total fees'};
+    # $txn{Amount} += $txn{'Total fees'};
     say join ',', map { maybe_quote($_) } @txn{'Date', 'Amount', 'Description'};
   }
 }
